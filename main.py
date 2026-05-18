@@ -5,7 +5,7 @@ import math, random
 # VPyLab 문서에서 확인한 sphere, ring, helix, curve, label, local_light, rate를 섞어 만든 작은 우주 풍경입니다.
 
 scene_background(color.black)
-local_light(pos=vector(0, 5, 4), color=color.white)
+local_light(pos=vector(0, 15, 4), color=color.white)
 local_light(pos=vector(-4, -2, 3), color=vector(0.2, 0.5, 1.0))
 
 label(pos=vector(0, 3.4, 0), text="반딧불 은하 오르골", height=18, color=color.cyan)
