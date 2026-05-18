@@ -37,7 +37,7 @@ for p in constellation_points:
     sphere(pos=p, radius=0.07, color=color.white)
 constellation = curve(color=vector(0.55, 0.85, 1.0), radius=0.012)
 for p in constellation_points:
-    constellation.append(pos=p)
+    constellation.append(p)
 label(pos=vector(-3.7, 3.25, -2.3), text="작은 요정자리", height=8, color=vector(0.55, 0.85, 1.0))
 
 # 행성들: 반지름, 크기, 색, 속도
@@ -51,7 +51,7 @@ planets = []
 for idx, (orbit, size, col, speed) in enumerate(planet_specs):
     angle = idx * 2.1
     body = sphere(pos=vector(math.cos(angle) * orbit, 0, math.sin(angle) * orbit), radius=size, color=col)
-    body.attach_trail(color=col, radius=size * 0.18, retain=110)
+    body.attach_trail(color=col, retain=110)
     planets.append((body, orbit, speed, angle))
 
 # 반딧불이 — 각각 다른 위상으로 깜빡이며 위아래로 움직임
@@ -67,7 +67,7 @@ for i in range(34):
 comets = []
 for i in range(3):
     comet = sphere(pos=vector(-4, 2, i - 1), radius=0.09 + 0.02 * i, color=color.white)
-    comet.attach_trail(color=[color.cyan, color.magenta, color.orange][i], radius=0.02, retain=55)
+    comet.attach_trail(color=[color.cyan, color.magenta, color.orange][i], retain=55)
     comets.append((comet, i * 2.3))
 
 # 오로라 리본: 작은 구슬 줄로 구성해서 파도처럼 흔들기
@@ -94,18 +94,18 @@ while True:
     # 키 입력: 은하 바람과 속도 조절
     keys = keysdown()
     wind = vector(0, 0, 0)
-    if 'left' in keys or 'a' in keys:
+    if 'ArrowLeft' in keys or 'left' in keys or 'a' in keys:
         wind.x -= 0.18
-    if 'right' in keys or 'd' in keys:
+    if 'ArrowRight' in keys or 'right' in keys or 'd' in keys:
         wind.x += 0.18
-    if 'up' in keys or 'w' in keys:
+    if 'ArrowUp' in keys or 'up' in keys or 'w' in keys:
         wind.y += 0.10
         speed_boost = 1.65
     else:
         speed_boost = 1.0
-    if 'down' in keys or 's' in keys:
+    if 'ArrowDown' in keys or 'down' in keys or 's' in keys:
         wind.y -= 0.10
-    space_now = ' ' in keys or 'space' in keys
+    space_now = ' ' in keys or 'Space' in keys or 'space' in keys
     if space_now and not last_space:
         sparkle_mode = not sparkle_mode
     last_space = space_now
