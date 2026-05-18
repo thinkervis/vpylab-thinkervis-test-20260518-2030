@@ -3,7 +3,7 @@ import math, random
 
 # 반딧불 은하 오르골 v2 — 인터랙티브 밤하늘
 # 석리송님의 조명 변경(local_light y=15)을 살리고,
-# 문서 기능(sphere/ring/helix/label/local_light/curve/rate/keysdown/scene.mouse)을 더 섞었습니다.
+# 문서 기능(sphere/ring/helix/label/local_light/curve/rate/keysdown/scene.mouse/마우스 클릭)을 더 섞었습니다.
 
 scene_background(color.black)
 local_light(pos=vector(0, 15, 4), color=color.white)
@@ -11,7 +11,7 @@ local_light(pos=vector(-4, -2, 3), color=vector(0.2, 0.5, 1.0))
 local_light(pos=vector(4, 2, -3), color=vector(1.0, 0.45, 0.2))
 
 label(pos=vector(0, 3.55, 0), text="반딧불 은하 오르골 v2", height=18, color=color.cyan)
-label(pos=vector(0, 3.16, 0), text="방향키/WASD: 은하 바람 · Space: 반짝임 모드 · 마우스 위치: 오로라 지휘", height=8, color=color.white)
+label(pos=vector(0, 3.16, 0), text="방향키/WASD: 은하 바람 · Space/마우스 클릭: 반짝임 · 마우스 위치: 오로라 지휘", height=8, color=color.white)
 
 # 중심 별과 은하 원반
 sun = sphere(pos=vector(0, 0, 0), radius=0.45, color=color.yellow)
@@ -87,6 +87,7 @@ wind = vector(0, 0, 0)
 speed_boost = 1.0
 sparkle_mode = False
 last_space = False
+last_mouse_down = False
 
 # 소리 테스트: 기초 문법 리스트 + 인덱스로 은하 멜로디 만들기
 galaxy_notes = ['도4', '미4', '솔4', '시4', '높은도4', '솔4', '미4']
@@ -110,14 +111,17 @@ while True:
         speed_boost = 1.0
     if 'ArrowDown' in keys or 'down' in keys or 's' in keys:
         wind.y -= 0.10
+    mouse = scene.mouse
+    mouse_down = mouse.down if mouse else False
     space_now = ' ' in keys or 'Space' in keys or 'space' in keys
-    if space_now and not last_space:
+    if (space_now and not last_space) or (mouse_down and not last_mouse_down):
         sparkle_mode = not sparkle_mode
         play_sfx('select')
     last_space = space_now
+    last_mouse_down = mouse_down
 
     # 마우스 위치로 오로라 강도 살짝 지휘
-    mouse_x = scene.mouse.pos.x if scene.mouse else 0
+    mouse_x = mouse.pos.x if mouse else 0
     conductor = max(-1, min(1, mouse_x / 5))
 
     # 은하 멜로디: 일정 시간마다 짧은 음을 냅니다.
