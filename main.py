@@ -87,6 +87,10 @@ speed_boost = 1.0
 sparkle_mode = False
 last_space = False
 
+# 소리 테스트: 기초 문법 리스트 + 인덱스로 은하 멜로디 만들기
+galaxy_notes = ['도4', '미4', '솔4', '시4', '높은도4', '솔4', '미4']
+last_note_step = -1
+
 while True:
     rate(60)
     clock += 0.025 * speed_boost
@@ -108,11 +112,18 @@ while True:
     space_now = ' ' in keys or 'Space' in keys or 'space' in keys
     if space_now and not last_space:
         sparkle_mode = not sparkle_mode
+        play_sfx('select')
     last_space = space_now
 
     # 마우스 위치로 오로라 강도 살짝 지휘
     mouse_x = scene.mouse.pos.x if scene.mouse else 0
     conductor = max(-1, min(1, mouse_x / 5))
+
+    # 은하 멜로디: 일정 시간마다 짧은 음을 냅니다.
+    note_step = int(clock * 2)
+    if note_step != last_note_step:
+        play_note(galaxy_notes[note_step % len(galaxy_notes)], duration=0.16, type='sine', volume=0.18)
+        last_note_step = note_step
 
     # 태양 숨쉬기
     sun.radius = 0.45 + 0.06 * math.sin(clock * 3)
