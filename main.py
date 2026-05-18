@@ -3,7 +3,7 @@ import math, random
 
 # 반딧불 은하 오르골 v2 — 인터랙티브 밤하늘
 # 석리송님의 조명 변경(local_light y=15)을 살리고,
-# 문서 기능(sphere/ring/helix/label/local_light/attach_trail/rate/keysdown/scene.mouse)을 더 섞었습니다.
+# 문서 기능(sphere/ring/helix/label/local_light/curve/rate/keysdown/scene.mouse)을 더 섞었습니다.
 
 scene_background(color.black)
 local_light(pos=vector(0, 15, 4), color=color.white)
@@ -51,8 +51,9 @@ planets = []
 for idx, (orbit, size, col, speed) in enumerate(planet_specs):
     angle = idx * 2.1
     body = sphere(pos=vector(math.cos(angle) * orbit, 0, math.sin(angle) * orbit), radius=size, color=col)
-    body.attach_trail(color=col, retain=110)
-    planets.append((body, orbit, speed, angle))
+    # 현재 실행 런타임 호환성을 위해 안정적인 curve 궤도를 씁니다.
+    trail = curve(color=col, radius=0.008)
+    planets.append((body, orbit, speed, angle, trail))
 
 # 반딧불이 — 각각 다른 위상으로 깜빡이며 위아래로 움직임
 fireflies = []
@@ -67,8 +68,8 @@ for i in range(34):
 comets = []
 for i in range(3):
     comet = sphere(pos=vector(-4, 2, i - 1), radius=0.09 + 0.02 * i, color=color.white)
-    comet.attach_trail(color=[color.cyan, color.magenta, color.orange][i], retain=55)
-    comets.append((comet, i * 2.3))
+    trail = curve(color=[color.cyan, color.magenta, color.orange][i], radius=0.012)
+    comets.append((comet, i * 2.3, trail))
 
 # 오로라 리본: 작은 구슬 줄로 구성해서 파도처럼 흔들기
 ribbons = []
@@ -136,9 +137,11 @@ while True:
 
     # 행성 공전
     for i in range(len(planets)):
-        body, orbit, speed, angle0 = planets[i]
+        body, orbit, speed, angle0, trail = planets[i]
         a = angle0 + clock * speed
         body.pos = vector(math.cos(a) * orbit, 0.25 * math.sin(a * 1.7), math.sin(a) * orbit) + wind
+        if int(clock * 60) % 3 == 0:
+            trail.append(body.pos)
 
     # 반딧불이 군무
     for bug, angle0, radius, base_y, speed in fireflies:
@@ -150,8 +153,10 @@ while True:
         bug.color = vector(0.35 + 0.65 * pulse, 0.75 + 0.25 * pulse, 0.18 + (0.35 if sparkle_mode else 0))
 
     # 유성 왕복
-    for comet, phase in comets:
+    for comet, phase, trail in comets:
         comet.pos = vector(-4.8 + ((clock * 1.15 + phase) % 9.6), 1.9 - 0.45 * math.sin(clock * 1.2 + phase), 1.8 * math.sin(clock * 0.8 + phase))
+        if int(clock * 60) % 2 == 0:
+            trail.append(comet.pos)
 
     # 오로라 흔들림
     for beads, base_y, row in ribbons:

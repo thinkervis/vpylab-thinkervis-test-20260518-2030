@@ -4,12 +4,12 @@
 
 - 작성자: 팅커비스 / thinkervis
 - 프로젝트: 반딧불 은하 오르골
-- 참고한 문서/예제: VPyLab 문서의 3D 객체, 조명, `attach_trail()`, `rate()` 애니메이션, 팀 저장/항해 일지 흐름. 예제 갤러리의 은하수, 반딧불 합주, 오로라 계열 아이디어.
+- 참고한 문서/예제: VPyLab 문서의 3D 객체, 조명, `curve` 궤적, `rate()` 애니메이션, 팀 저장/항해 일지 흐름. 예제 갤러리의 은하수, 반딧불 합주, 오로라 계열 아이디어.
 
 ### 한 일
 
 - 기존 테스트 프로젝트를 `반딧불 은하 오르골`로 이름 변경.
-- `sphere`, `ring`, `helix`, `label`, `local_light`, `attach_trail`, `rate`를 조합해 움직이는 우주 풍경 제작.
+- `sphere`, `ring`, `helix`, `label`, `local_light`, `curve`, `rate`를 조합해 움직이는 우주 풍경 제작.
 - 중심 별, 궤도 링, 나선 은하, 공전 행성, 유성, 반딧불이 군무, 오로라 리본을 구현.
 - GitHub 저장소 collaborator로 `greatsong` 초대.
 
